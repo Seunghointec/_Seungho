@@ -1,10 +1,9 @@
 package Entities;
 
-import Service.AttributeEncryptor;
-
 import javax.persistence.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Objects;
 
 @Entity
 @Table(name = "User")
@@ -12,35 +11,37 @@ public class User {
 
     @Id
     private String login;
-    private String password;
+    private String passwordHash;
     private boolean active;
-    @OneToOne (cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}) //UML indicate the user is the parent class
+    @OneToOne (cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}) //UML owner
+
+
     private Person person;
-    //@Convert(converter = AttributeEncryptor.class)
     private String encryptedPassword;
 
     public User() {
     }
 
-    public User(String login, String password, boolean active) {
+    public User(String login, String passwordHash, boolean active) {
         this.login = login;
-        this.password = password;
+        this.passwordHash = passwordHash;
         this.active = active;
     }
 
-    public User(String login, String password, boolean active, String encryptedPassword) {
+    public User(String login, String passwordHash, boolean active, String encryptedPassword) {
         this.login = login;
-        this.password = password;
+        this.passwordHash = passwordHash;
         this.active = active;
         this.encryptedPassword = encryptedPassword;
     }
 
 
-    public User(String login, String password, boolean active, Person person) {
+    public User(String login, String passwordHash, boolean active, String encryptedPassword, Person person) {
         this.login = login;
-        this.password = password;
+        this.passwordHash = passwordHash;
         this.active = active;
         this.person = person;
+        this.encryptedPassword = encryptedPassword;
     }
 
     public String getLogin() {
@@ -87,12 +88,12 @@ public class User {
         this.encryptedPassword = encryptedPassword;
     }
 
-    public String getPassword() {
-        return password;
+    public String getPasswordHash() {
+        return passwordHash;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
     }
 
     public boolean isActive() {
@@ -112,10 +113,23 @@ public class User {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(passwordHash, user.passwordHash) && Objects.equals(encryptedPassword, user.encryptedPassword);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(passwordHash, encryptedPassword);
+    }
+
+    @Override
     public String toString() {
         return "User{" +
                 "login='" + login + '\'' +
-                ", password='" + password + '\'' +
+                ", password='" + passwordHash + '\'' +
                 ", active=" + active +
                 ", person=" + person +
                 ", encryptPassword='" +encryptedPassword + '\'' +

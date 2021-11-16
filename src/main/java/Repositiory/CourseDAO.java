@@ -18,7 +18,7 @@ public class CourseDAO {
 
     public List<Course> getAllCourses() {
         EntityManager em = ConnectionEMF.getEMF().createEntityManager();
-        List<Course> courses = em.createQuery("Select mf From Course mf").getResultList();
+        List<Course> courses = em.createQuery("Select co From Course co").getResultList();
         return courses;
     }
 

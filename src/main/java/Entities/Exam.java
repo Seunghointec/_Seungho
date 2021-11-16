@@ -2,6 +2,7 @@ package Entities;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 
 @Entity
@@ -17,6 +18,11 @@ public class Exam {
     private int total;
     @ManyToOne (cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Module module;
+    @ManyToOne
+    private Exam examGroup;
+    @OneToMany (mappedBy = "examGroup", cascade = {CascadeType.MERGE, CascadeType.REMOVE})
+    private List<Exam> subExams;
+
 
     public Exam() {
     }
@@ -38,6 +44,18 @@ public class Exam {
         this.weight = weight;
         this.total = total;
         this.module = module;
+    }
+
+    public Exam(String name, String description, LocalDate date, int weight, int total,
+                Module module, Exam examGroup, List<Exam> subExams) {
+        this.name = name;
+        this.description = description;
+        this.date = date;
+        this.weight = weight;
+        this.total = total;
+        this.module = module;
+        this.examGroup = examGroup;
+        this.subExams = subExams;
     }
 
     public Long getId() {
@@ -92,6 +110,22 @@ public class Exam {
         this.module = module;
     }
 
+    public Exam getExamGroup() {
+        return examGroup;
+    }
+
+    public void setExamGroup(Exam examGroup) {
+        this.examGroup = examGroup;
+    }
+
+    public List<Exam> getSubExams() {
+        return subExams;
+    }
+
+    public void setSubExams(List<Exam> subExams) {
+        this.subExams = subExams;
+    }
+
     @Override
     public String toString() {
         return "Exam{" +
@@ -104,4 +138,5 @@ public class Exam {
                 ", module=" + module +
                 '}';
     }
+
 }

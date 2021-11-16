@@ -13,7 +13,7 @@ public class Course {
     private String code;
     private String imageURL;
     private boolean active;
-    @OneToMany(mappedBy = "course", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToMany(mappedBy = "course", cascade = {CascadeType.PERSIST, CascadeType.MERGE}) //UML owner
     private List<Module> modules; //if modules is made first then we need to put cascade in the this class
 
     public Course() {

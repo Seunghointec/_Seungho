@@ -1,6 +1,7 @@
 package Entities;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Person {
@@ -12,7 +13,9 @@ public class Person {
     @Enumerated(value = EnumType.STRING)
     private Gender gender;
     @ManyToOne (cascade = {CascadeType.PERSIST, CascadeType.MERGE}) //unidirectional bc there is no @ in the course class
-    private Course course;
+    private Course courseActive;
+    @ManyToMany (cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private List<Course> coursesHistory;
 
 
     public Person() {
@@ -28,7 +31,16 @@ public class Person {
         this.firstName = firstName;
         this.lastName = lastName;
         this.gender = gender;
-        this.course = course;
+        this.courseActive = course;
+    }
+
+    public Person(Integer id, String firstName, String lastName, Gender gender, Course course, List<Course> coursesHistory) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.gender = gender;
+        this.courseActive = course;
+        this.coursesHistory = coursesHistory;
     }
 
     public Integer getId() {
@@ -63,12 +75,20 @@ public class Person {
         this.gender = gender;
     }
 
-    public Course getCourse() {
-        return course;
+    public Course getCourseActive() {
+        return courseActive;
     }
 
-    public void setCourse(Course course) {
-        this.course = course;
+    public void setCourseActive(Course courseActive) {
+        this.courseActive = courseActive;
+    }
+
+    public List<Course> getCoursesHistory() {
+        return coursesHistory;
+    }
+
+    public void setCoursesHistory(List<Course> coursesHistory) {
+        this.coursesHistory = coursesHistory;
     }
 
     @Override
@@ -78,7 +98,8 @@ public class Person {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", gender=" + gender +
-                ", course=" + course +
+                ", course=" + courseActive +
+                ", courseHistory" + coursesHistory +
                 '}';
     }
 }

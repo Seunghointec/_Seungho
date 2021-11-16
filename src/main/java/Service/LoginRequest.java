@@ -22,7 +22,7 @@ public class LoginRequest {
             user = userDAO.getUserById(inpUser);
             System.out.println("Please enter your password");
             String inpPass = keyboard.nextLine(); // gets input from user
-            if (inpPass.equals(user.getPassword())) {
+            if (inpPass.equals(user.getPasswordHash())) {
                 if (user.isActive()) {
                     System.out.println("welcome " + user.getPerson().getFirstName());
                     System.out.println("your encrypt password is " + user.getEncryptedPassword());
